@@ -60,3 +60,16 @@ func TestZip(t *testing.T) {
 		assert.Equal(t, expected, Zip(keys, values))
 	})
 }
+
+func TestUnzip(t *testing.T) {
+	t.Run("Simple", func(t *testing.T) {
+		m := map[string]any{"name": "John", "age": 28}
+		expectedKeys := []string{"name", "age"}
+		expectedValues := []any{"John", 28}
+
+		keys, values := Unzip(m)
+
+		assert.Equal(t, expectedKeys, keys)
+		assert.Equal(t, expectedValues, values)
+	})
+}

@@ -54,3 +54,22 @@ func Zip[K comparable, V any](keys []K, values []V) map[K]V {
 
 	return result
 }
+
+// Produce an array of keys and values from a map.
+//
+//     m := map[string]any{"name":"John", "age":28}
+//     keys, values := Unzip(m)
+//
+//     // keys = { "name", "age" }
+//     // values = { "John", 28 }
+func Unzip[K comparable, V any](m map[K]V) (keys []K, values []V) {
+	keys = make([]K, 0)
+	values = make([]V, 0)
+
+	for k, v := range m {
+		keys = append(keys, k)
+		values = append(values, v)
+	}
+
+	return keys, values
+}
