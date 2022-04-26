@@ -35,3 +35,14 @@ func MapString[R any](value string, convert func(value rune) R) (mapped []R) {
 
 	return mapped
 }
+
+// Produce a map from an array of keys and values.
+func Zip[K comparable, V any](keys []K, values []V) map[K]V {
+	result := make(map[K]V)
+
+	for i := 0; i < len(keys); i++ {
+		result[keys[i]] = values[i]
+	}
+
+	return result
+}

@@ -34,3 +34,21 @@ func TestFilter(t *testing.T) {
 		assert.Equal(t, expected, actual)
 	})
 }
+
+func TestZip(t *testing.T) {
+	t.Run("Two string arrays", func(t *testing.T) {
+		keys := []string{"name", "country"}
+		values := []string{"John", "USA"}
+		expected := map[string]string{"name": "John", "country": "USA"}
+
+		assert.Equal(t, expected, Zip(keys, values))
+	})
+
+	t.Run("Integer as key, string as value", func(t *testing.T) {
+		keys := []int{1, 2, 3}
+		values := []string{"John", "Jack", "Jane"}
+		expected := map[int]string{1: "John", 2: "Jack", 3: "Jane"}
+
+		assert.Equal(t, expected, Zip(keys, values))
+	})
+}
