@@ -73,3 +73,41 @@ func Unzip[K comparable, V any](m map[K]V) (keys []K, values []V) {
 
 	return keys, values
 }
+
+// Iterate calling reducer on the previously calculated value and the current
+// value from the array. On the first call, initial is used as the "previously
+// calculated value."
+//
+//     nums := []int{1,2,3}
+//     sumFunc := func (previous int, current int) int { return previous + current }
+//     result := Reduce(nums, sumFunc, 0) // 6
+func Reduce[V comparable](ary []V, reducer func(previous V, current V) V, initial V) V {
+	result := initial
+
+	for _, v := range ary {
+		result = reducer(result, v)
+	}
+
+	return result
+}
+
+// Iterate backward calling reducer on the previously calculated value and the current
+// value from the array. On the first call, initial is used as the "previously
+// calculated value."
+//
+//     nums := []int{2, 2, 12}
+//     divide := func (previous int, current int) int { return previous / current }
+//     result := ReduceRight(nums, sumFunc, 144) // 3
+func ReduceRight[V comparable](ary []V, reducer func(previous V, current V) V, initial V) V {
+	result := initial
+
+	for i := len(ary) - 1; i >= 0; i-- {
+		result = reducer(result, ary[i])
+	}
+
+	return result
+}
+
+// TODO Every
+// TODO Some
+// TODO Any

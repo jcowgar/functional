@@ -69,7 +69,27 @@ func TestUnzip(t *testing.T) {
 
 		keys, values := Unzip(m)
 
-		assert.Equal(t, expectedKeys, keys)
-		assert.Equal(t, expectedValues, values)
+		assert.Equal(t, expectedKeys, keys, "Keys are invalid")
+		assert.Equal(t, expectedValues, values, "Values are invalid")
+	})
+}
+
+func TestReduce(t *testing.T) {
+	t.Run("Sum values", func(t *testing.T) {
+		f := func(previous int, current int) int { return previous + current }
+		nums := []int{1, 2, 3}
+		expected := 6
+
+		assert.Equal(t, expected, Reduce(nums, f, 0))
+	})
+}
+
+func TestReduceRight(t *testing.T) {
+	t.Run("Divide values", func(t *testing.T) {
+		nums := []int{2, 2, 12}
+		divide := func(previous int, current int) int { return previous / current }
+		result := ReduceRight(nums, divide, 144) // 3
+
+		assert.Equal(t, 3, result)
 	})
 }
