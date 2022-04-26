@@ -79,8 +79,8 @@ func Unzip[K comparable, V any](m map[K]V) (keys []K, values []V) {
 // calculated value."
 //
 //     nums := []int{1,2,3}
-//     sumFunc := func (previous int, current int) int { return previous + current }
-//     result := Reduce(nums, sumFunc, 0) // 6
+//     sum := func (previous int, current int) int { return previous + current }
+//     result := Reduce(nums, sum, 0) // 6
 func Reduce[V comparable](ary []V, reducer func(previous V, current V) V, initial V) V {
 	result := initial
 
@@ -97,7 +97,7 @@ func Reduce[V comparable](ary []V, reducer func(previous V, current V) V, initia
 //
 //     nums := []int{2, 2, 12}
 //     divide := func (previous int, current int) int { return previous / current }
-//     result := ReduceRight(nums, sumFunc, 144) // 3
+//     result := ReduceRight(nums, divide, 144) // 3
 func ReduceRight[V comparable](ary []V, reducer func(previous V, current V) V, initial V) V {
 	result := initial
 
@@ -108,6 +108,32 @@ func ReduceRight[V comparable](ary []V, reducer func(previous V, current V) V, i
 	return result
 }
 
-// TODO Every
-// TODO Some
-// TODO Any
+// Returns true if any element of the array satisfies the test function.
+//
+//     nums := []int{1,2,3}
+//     isEven := func (v int) { return v % 2 == 0 }
+//     hasEven := Any(nums, isEven) // true
+func Any[V comparable](ary []V, test func(value V) bool) bool {
+	for _, v := range ary {
+		if test(v) {
+			return true
+		}
+	}
+
+	return false
+}
+
+// Returns true if every element of the array satisfies the test function.
+//
+//     nums := []int{2,4,6}
+//     isEven := func (v int) { return v % 2 == 0 }
+//     hasEven := Every(nums, isEven) // true
+func Every[V comparable](ary []V, test func(value V) bool) bool {
+	for _, v := range ary {
+		if test(v) == false {
+			return false
+		}
+	}
+
+	return true
+}

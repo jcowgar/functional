@@ -93,3 +93,35 @@ func TestReduceRight(t *testing.T) {
 		assert.Equal(t, 3, result)
 	})
 }
+
+func TestAny(t *testing.T) {
+	t.Run("Any true with a true value", func(t *testing.T) {
+		ary := []bool{false, true, false}
+		isTrue := func(v bool) bool { return v == true }
+
+		assert.Equal(t, true, Any(ary, isTrue))
+	})
+
+	t.Run("Any true with no true values", func(t *testing.T) {
+		ary := []bool{false, false, false}
+		isTrue := func(v bool) bool { return v == true }
+
+		assert.Equal(t, false, Any(ary, isTrue))
+	})
+}
+
+func TestEvery(t *testing.T) {
+	t.Run("All items are true", func(t *testing.T) {
+		ary := []bool{true, true, true}
+		isTrue := func(v bool) bool { return v == true }
+
+		assert.Equal(t, true, Every(ary, isTrue))
+	})
+
+	t.Run("One item is false", func(t *testing.T) {
+		ary := []bool{true, false, true}
+		isTrue := func(v bool) bool { return v == true }
+
+		assert.Equal(t, false, Every(ary, isTrue))
+	})
+}
