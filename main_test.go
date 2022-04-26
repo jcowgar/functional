@@ -125,3 +125,13 @@ func TestEvery(t *testing.T) {
 		assert.Equal(t, false, Every(ary, isTrue))
 	})
 }
+
+func TestDifference(t *testing.T) {
+	t.Run("Simple", func(t *testing.T) {
+		source := []int{1, 2, 3}
+		other := []int{2}
+		expected := []int{1, 3}
+
+		assert.Equal(t, expected, Difference(source, other))
+	})
+}

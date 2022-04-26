@@ -137,3 +137,26 @@ func Every[V comparable](ary []V, test func(value V) bool) bool {
 
 	return true
 }
+
+// Returns a new array containing only the elements in source that
+// do not exist in other.
+//
+//     a := []int{1, 2, 3}
+//     b := []int{2}
+//     diff := Difference(a, b) // []int{1, 3}
+func Difference[A comparable](source []A, other []A) []A {
+	otherMap := make(map[A]bool)
+
+	for _, v := range other {
+		otherMap[v] = true
+	}
+
+	result := make([]A, 0)
+	for _, v := range source {
+		if _, found := otherMap[v]; !found {
+			result = append(result, v)
+		}
+	}
+
+	return result
+}
