@@ -160,3 +160,22 @@ func Difference[A comparable](source []A, other []A) []A {
 
 	return result
 }
+
+// Returns a new array containing only the unique values in source
+//
+//     a := []int{1, 2, 2, 3, 1}
+//     u := Unique(a) // []int{1, 2, 3}
+func Unique[A comparable](source []A) []A {
+	mapped := make(map[A]bool)
+
+	for _, v := range source {
+		mapped[v] = true
+	}
+
+	result := make([]A, 0)
+	for k := range mapped {
+		result = append(result, k)
+	}
+
+	return result
+}

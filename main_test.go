@@ -135,3 +135,12 @@ func TestDifference(t *testing.T) {
 		assert.Equal(t, expected, Difference(source, other))
 	})
 }
+
+func TestUnique(t *testing.T) {
+	t.Run("Containing duplicate values", func(t *testing.T) {
+		ary := []int{1, 1, 2, 3}
+		expected := []int{1, 2, 3}
+
+		assert.Equal(t, expected, Unique(ary))
+	})
+}
