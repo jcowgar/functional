@@ -1,3 +1,5 @@
+// Package functional provides some basic functional language
+// type functions.
 package functional
 
 // Construct a new array from those elements of values for which the
@@ -37,6 +39,12 @@ func MapString[R any](value string, convert func(value rune) R) (mapped []R) {
 }
 
 // Produce a map from an array of keys and values.
+//
+//     keys := []string{"name", "age"}
+//     values := []any{"John", 28}
+//     mapped := Zip(keys, values)
+//
+//     // { "name": "John", "age": 28 }
 func Zip[K comparable, V any](keys []K, values []V) map[K]V {
 	result := make(map[K]V)
 
