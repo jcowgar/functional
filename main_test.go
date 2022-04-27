@@ -1,6 +1,8 @@
 package functional
 
 import (
+	"fmt"
+	"sort"
 	"strconv"
 	"testing"
 
@@ -63,14 +65,29 @@ func TestZip(t *testing.T) {
 
 func TestUnzip(t *testing.T) {
 	t.Run("Simple", func(t *testing.T) {
+		var foundName, foundAge bool
 		m := map[string]any{"name": "John", "age": 28}
-		expectedKeys := []string{"name", "age"}
-		expectedValues := []any{"John", 28}
 
 		keys, values := Unzip(m)
 
-		assert.Equal(t, expectedKeys, keys, "Keys are invalid")
-		assert.Equal(t, expectedValues, values, "Values are invalid")
+		assert.Equal(t, len(m), len(keys), "Keys is not the proper length")
+		assert.Equal(t, len(m), len(values), "Values is not the proper length")
+
+		for i, k := range keys {
+			switch k {
+			case "name":
+				foundName = true
+				assert.Equal(t, "John", values[i])
+			case "age":
+				foundAge = true
+				assert.Equal(t, 28, values[i])
+			default:
+				assert.Fail(t, fmt.Sprintf("unknown key: %s", k))
+			}
+		}
+
+		assert.True(t, foundName, "Didn't find name in the returned keys!")
+		assert.True(t, foundAge, "Didn't find age in the returned keys!")
 	})
 }
 
@@ -140,7 +157,10 @@ func TestUnique(t *testing.T) {
 	t.Run("Containing duplicate values", func(t *testing.T) {
 		ary := []int{1, 1, 2, 3}
 		expected := []int{1, 2, 3}
+		actual := Unique(ary)
 
-		assert.Equal(t, expected, Unique(ary))
+		sort.Ints(actual)
+
+		assert.Equal(t, expected, actual)
 	})
 }
