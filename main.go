@@ -1,8 +1,16 @@
-// Package functional provides some basic functional language
-// type functions.
 package functional
 
-// Construct a new array from those elements of values for which the
+// Contains returns true if values contains value.
+func Contains[T comparable](values []T, value T) bool {
+	for _, v := range values {
+		if v == value {
+			return true
+		}
+	}
+	return false
+}
+
+// Filter returns a new array from those elements of values for which the
 // include function returns true.
 func Filter[R any](values []R, include func(v R) bool) (filtered []R) {
 	for _, v := range values {
@@ -14,7 +22,7 @@ func Filter[R any](values []R, include func(v R) bool) (filtered []R) {
 	return filtered
 }
 
-// Construct a new array from those elements of values converted to the new
+// Map returns a new array from those elements of values converted to the new
 // value returned by the convert function.
 func Map[I any, R any](values []I, convert func(value I) R) (mapped []R) {
 	mapped = make([]R, len(values))
@@ -26,7 +34,7 @@ func Map[I any, R any](values []I, convert func(value I) R) (mapped []R) {
 	return mapped
 }
 
-// Construct a new array from the characters in value converted to a new
+// MapString a new array from the characters in value converted to a new
 // value returned by the convert function.
 func MapString[R any](value string, convert func(value rune) R) (mapped []R) {
 	mapped = make([]R, len(value))
@@ -38,7 +46,7 @@ func MapString[R any](value string, convert func(value rune) R) (mapped []R) {
 	return mapped
 }
 
-// Produce a map from an array of keys and values.
+// Zip returns a new map from an array of keys and values.
 //
 //     keys := []string{"name", "age"}
 //     values := []any{"John", 28}
@@ -55,7 +63,7 @@ func Zip[K comparable, V any](keys []K, values []V) map[K]V {
 	return result
 }
 
-// Produce an array of keys and values from a map.
+// Unzip returns a new array of keys and values from a map.
 //
 //     m := map[string]any{"name":"John", "age":28}
 //     keys, values := Unzip(m)
@@ -74,9 +82,11 @@ func Unzip[K comparable, V any](m map[K]V) (keys []K, values []V) {
 	return keys, values
 }
 
-// Iterate calling reducer on the previously calculated value and the current
-// value from the array. On the first call, initial is used as the "previously
-// calculated value."
+// Reduce iterates the source array calling reducer on the previously
+// calculated value from the reducer function and the current
+// value from the array.
+//
+// On the first call, initial is used as the "previously calculated value."
 //
 //     nums := []int{1,2,3}
 //     sum := func (previous int, current int) int { return previous + current }
@@ -91,8 +101,10 @@ func Reduce[V comparable](ary []V, reducer func(previous V, current V) V, initia
 	return result
 }
 
-// Iterate backward calling reducer on the previously calculated value and the current
-// value from the array. On the first call, initial is used as the "previously
+// ReduceRight iterates the source array backward calling reducer on the
+// previously calculated value and the current value from the array.
+//
+// On the first call, initial is used as the "previously
 // calculated value."
 //
 //     nums := []int{2, 2, 12}
@@ -108,7 +120,7 @@ func ReduceRight[V comparable](ary []V, reducer func(previous V, current V) V, i
 	return result
 }
 
-// Returns true if any element of the array satisfies the test function.
+// Any returns true if any element of the array satisfies the test function.
 //
 //     nums := []int{1,2,3}
 //     isEven := func (v int) { return v % 2 == 0 }
@@ -123,14 +135,14 @@ func Any[V comparable](ary []V, test func(value V) bool) bool {
 	return false
 }
 
-// Returns true if every element of the array satisfies the test function.
+// Every returns true if every element of the array satisfies the test function.
 //
 //     nums := []int{2,4,6}
 //     isEven := func (v int) { return v % 2 == 0 }
 //     hasEven := Every(nums, isEven) // true
 func Every[V comparable](ary []V, test func(value V) bool) bool {
 	for _, v := range ary {
-		if test(v) == false {
+		if !test(v) {
 			return false
 		}
 	}
@@ -138,7 +150,7 @@ func Every[V comparable](ary []V, test func(value V) bool) bool {
 	return true
 }
 
-// Returns a new array containing only the elements in source that
+// Difference returns a new array containing only the elements in source that
 // do not exist in other.
 //
 //     a := []int{1, 2, 3}
@@ -161,7 +173,7 @@ func Difference[A comparable](source []A, other []A) []A {
 	return result
 }
 
-// Returns a new array containing only the unique values in source
+// Unique returns a new array containing only the unique values in source
 //
 //     a := []int{1, 2, 2, 3, 1}
 //     u := Unique(a) // []int{1, 2, 3}
@@ -175,6 +187,27 @@ func Unique[A comparable](source []A) []A {
 	result := make([]A, 0)
 	for k := range mapped {
 		result = append(result, k)
+	}
+
+	return result
+}
+
+// Chunk returns a new array with groups of size from source. If
+// the array is not evenly divisible, the last element will contain
+// the remaining number of elements.
+//
+//     a := []int{1, 2, 3, 4, 5}
+//     result := Chunk(a, 2)
+//     // result is now [][]int{{1, 2}, {3, 4}, {5}}
+func Chunk[A any](source []A, size int) (result [][]A) {
+	lenSize := len(source)
+	for i := 0; i < lenSize; i += size {
+		ei := i + size
+		if ei > lenSize {
+			ei = lenSize
+		}
+
+		result = append(result, source[i:ei])
 	}
 
 	return result

@@ -9,6 +9,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestContains(t *testing.T) {
+	t.Run("true", func(t *testing.T) {
+		assert.True(t, Contains([]int{1, 2}, 1))
+	})
+
+	t.Run("false", func(t *testing.T) {
+		assert.False(t, Contains([]int{1, 2}, 3))
+	})
+}
+
 func TestMap(t *testing.T) {
 	t.Run("Simple add10 to int array", func(t *testing.T) {
 		nums := []int{1, 2, 3}
@@ -163,4 +173,24 @@ func TestUnique(t *testing.T) {
 
 		assert.Equal(t, expected, actual)
 	})
+}
+
+func TestMapString(t *testing.T) {
+	t.Run("Simple Map", func(t *testing.T) {
+		input := "0123"
+		expected := []int{0, 1, 2, 3}
+		actual := MapString(input, func(v rune) int {
+			return int(v) - '0'
+		})
+
+		assert.Equal(t, expected, actual)
+	})
+}
+
+func TestChunk(t *testing.T) {
+	values := []int{1, 2, 3, 4, 5}
+	expected := [][]int{{1, 2}, {3, 4}, {5}}
+	actual := Chunk(values, 2)
+
+	assert.Equal(t, expected, actual)
 }
