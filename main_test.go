@@ -153,6 +153,16 @@ func TestEvery(t *testing.T) {
 	})
 }
 
+func TestIntersection(t *testing.T) {
+	t.Run("Simple", func(t *testing.T) {
+		source := []int{1, 2, 3, 4}
+		other := []int{3, 4, 5, 6}
+		expected := []int{3, 4}
+
+		assert.Equal(t, expected, Intersection(source, other))
+	})
+}
+
 func TestDifference(t *testing.T) {
 	t.Run("Simple", func(t *testing.T) {
 		source := []int{1, 2, 3}

@@ -48,11 +48,11 @@ func MapString[R any](value string, convert func(value rune) R) (mapped []R) {
 
 // Zip returns a new map from an array of keys and values.
 //
-//     keys := []string{"name", "age"}
-//     values := []any{"John", 28}
-//     mapped := Zip(keys, values)
+//	keys := []string{"name", "age"}
+//	values := []any{"John", 28}
+//	mapped := Zip(keys, values)
 //
-//     // { "name": "John", "age": 28 }
+//	// { "name": "John", "age": 28 }
 func Zip[K comparable, V any](keys []K, values []V) map[K]V {
 	result := make(map[K]V)
 
@@ -65,11 +65,11 @@ func Zip[K comparable, V any](keys []K, values []V) map[K]V {
 
 // Unzip returns a new array of keys and values from a map.
 //
-//     m := map[string]any{"name":"John", "age":28}
-//     keys, values := Unzip(m)
+//	m := map[string]any{"name":"John", "age":28}
+//	keys, values := Unzip(m)
 //
-//     // keys = { "name", "age" }
-//     // values = { "John", 28 }
+//	// keys = { "name", "age" }
+//	// values = { "John", 28 }
 func Unzip[K comparable, V any](m map[K]V) (keys []K, values []V) {
 	keys = make([]K, 0)
 	values = make([]V, 0)
@@ -88,9 +88,9 @@ func Unzip[K comparable, V any](m map[K]V) (keys []K, values []V) {
 //
 // On the first call, initial is used as the "previously calculated value."
 //
-//     nums := []int{1,2,3}
-//     sum := func (previous int, current int) int { return previous + current }
-//     result := Reduce(nums, sum, 0) // 6
+//	nums := []int{1,2,3}
+//	sum := func (previous int, current int) int { return previous + current }
+//	result := Reduce(nums, sum, 0) // 6
 func Reduce[V comparable](ary []V, reducer func(previous V, current V) V, initial V) V {
 	result := initial
 
@@ -107,9 +107,9 @@ func Reduce[V comparable](ary []V, reducer func(previous V, current V) V, initia
 // On the first call, initial is used as the "previously
 // calculated value."
 //
-//     nums := []int{2, 2, 12}
-//     divide := func (previous int, current int) int { return previous / current }
-//     result := ReduceRight(nums, divide, 144) // 3
+//	nums := []int{2, 2, 12}
+//	divide := func (previous int, current int) int { return previous / current }
+//	result := ReduceRight(nums, divide, 144) // 3
 func ReduceRight[V comparable](ary []V, reducer func(previous V, current V) V, initial V) V {
 	result := initial
 
@@ -122,9 +122,9 @@ func ReduceRight[V comparable](ary []V, reducer func(previous V, current V) V, i
 
 // Any returns true if any element of the array satisfies the test function.
 //
-//     nums := []int{1,2,3}
-//     isEven := func (v int) { return v % 2 == 0 }
-//     hasEven := Any(nums, isEven) // true
+//	nums := []int{1,2,3}
+//	isEven := func (v int) { return v % 2 == 0 }
+//	hasEven := Any(nums, isEven) // true
 func Any[V comparable](ary []V, test func(value V) bool) bool {
 	for _, v := range ary {
 		if test(v) {
@@ -137,9 +137,9 @@ func Any[V comparable](ary []V, test func(value V) bool) bool {
 
 // Every returns true if every element of the array satisfies the test function.
 //
-//     nums := []int{2,4,6}
-//     isEven := func (v int) { return v % 2 == 0 }
-//     hasEven := Every(nums, isEven) // true
+//	nums := []int{2,4,6}
+//	isEven := func (v int) { return v % 2 == 0 }
+//	hasEven := Every(nums, isEven) // true
 func Every[V comparable](ary []V, test func(value V) bool) bool {
 	for _, v := range ary {
 		if !test(v) {
@@ -150,12 +150,35 @@ func Every[V comparable](ary []V, test func(value V) bool) bool {
 	return true
 }
 
+// Intersection returns a new array containing the elements that exist in
+// both the source and other values.
+//
+//	a := []int{1, 2, 3, 4}
+//	b := []int{3, 4, 5, 6}
+//	x := Intersection(a, b) // []int{3, 4}
+func Intersection[A comparable](source []A, other []A) []A {
+	otherMap := make(map[A]bool)
+
+	for _, v := range other {
+		otherMap[v] = true
+	}
+
+	result := make([]A, 0)
+	for _, v := range source {
+		if _, found := otherMap[v]; found {
+			result = append(result, v)
+		}
+	}
+
+	return result
+}
+
 // Difference returns a new array containing only the elements in source that
 // do not exist in other.
 //
-//     a := []int{1, 2, 3}
-//     b := []int{2}
-//     diff := Difference(a, b) // []int{1, 3}
+//	a := []int{1, 2, 3}
+//	b := []int{2}
+//	diff := Difference(a, b) // []int{1, 3}
 func Difference[A comparable](source []A, other []A) []A {
 	otherMap := make(map[A]bool)
 
@@ -175,8 +198,8 @@ func Difference[A comparable](source []A, other []A) []A {
 
 // Unique returns a new array containing only the unique values in source
 //
-//     a := []int{1, 2, 2, 3, 1}
-//     u := Unique(a) // []int{1, 2, 3}
+//	a := []int{1, 2, 2, 3, 1}
+//	u := Unique(a) // []int{1, 2, 3}
 func Unique[A comparable](source []A) []A {
 	mapped := make(map[A]bool)
 
@@ -196,9 +219,9 @@ func Unique[A comparable](source []A) []A {
 // the array is not evenly divisible, the last element will contain
 // the remaining number of elements.
 //
-//     a := []int{1, 2, 3, 4, 5}
-//     result := Chunk(a, 2)
-//     // result is now [][]int{{1, 2}, {3, 4}, {5}}
+//	a := []int{1, 2, 3, 4, 5}
+//	result := Chunk(a, 2)
+//	// result is now [][]int{{1, 2}, {3, 4}, {5}}
 func Chunk[A any](source []A, size int) (result [][]A) {
 	lenSize := len(source)
 	for i := 0; i < lenSize; i += size {
