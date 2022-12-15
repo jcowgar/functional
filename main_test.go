@@ -204,3 +204,14 @@ func TestChunk(t *testing.T) {
 
 	assert.Equal(t, expected, actual)
 }
+
+func TestPermutate(t *testing.T) {
+	values := []int{1, 2, 3}
+	actual := [][]int{}
+
+	for p := range Permutate(values) {
+		actual = append(actual, p)
+	}
+
+	assert.Equal(t, 6, len(actual))
+}
